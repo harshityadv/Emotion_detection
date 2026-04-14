@@ -1,0 +1,42 @@
+{
+  "SVM": {
+    "test_acc": 0.47534132070214546,
+    "train_time_min": 2.5688157002131145,
+    "type": "ml"
+  },
+  "KNN": {
+    "test_acc": 0.4076344385622736,
+    "train_time_min": 0.0001598517100016276,
+    "type": "ml"
+  },
+  "ANN": {
+    "best_val_acc": 0.31839294008360425,
+    "train_time_min": 7.862789162000021,
+    "type": "dl_mlp"
+  },
+  "CustomCNN": {
+    "best_val_acc": 0.4454249883882954,
+    "train_time_min": 7.941314176718394,
+    "type": "dl_small"
+  },
+  "MobileNetV3": {
+    "best_val_acc": 0.6314444960520205,
+    "train_time_min": 29.09160842100779,
+    "type": "dl_large"
+  },
+  "EfficientNetB0": {
+    "best_val_acc": 0.6467719461216906,
+    "train_time_min": 29.172774974505106,
+    "type": "dl_large"
+  },
+  "MiniXception": {
+    "best_val_acc": 0.4958197863446354,
+    "train_time_min": 13.57860639890035,
+    "type": "dl_small"
+  },
+  "ViTTiny": {
+    "best_val_acc": 0.6114723641430562,
+    "train_time_min": 31.224783718585968,
+    "type": "dl_large"
+  }
+}
