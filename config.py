@@ -1,16 +1,17 @@
 # ═══════════════════════════════════════════════════════════════════════════
 # config.py — Central configuration for Multi-Model Emotion Recognition
 # ═══════════════════════════════════════════════════════════════════════════
+# config.py
 import os
 import torch
 
-# ── Paths ─────────────────────────────────────────────────────────────────
-PROJECT_DIR = r"C:\Users\Dell\DAC-204Project"
+# This gets the directory where config.py is located
+PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
+
 TRAIN_DIR   = os.path.join(PROJECT_DIR, "train")
 TEST_DIR    = os.path.join(PROJECT_DIR, "test")
 CKPT_DIR    = os.path.join(PROJECT_DIR, "checkpoints")
 RESULTS_DIR = os.path.join(PROJECT_DIR, "results")
-
 os.makedirs(CKPT_DIR, exist_ok=True)
 os.makedirs(RESULTS_DIR, exist_ok=True)
 
@@ -40,14 +41,14 @@ IMG_SIZE_LARGE = 224          # For pretrained models (MobileNet, EfficientNet, 
 #  type: 'ml'        = scikit-learn traditional ML
 #  type: 'dl_mlp'    = PyTorch MLP (ANN), uses flattened features
 MODEL_REGISTRY = {
-    'SVM': {
-        'type': 'ml',
-        'display_name': 'Support Vector Machine (SVM)',
-    },
-    'KNN': {
-        'type': 'ml',
-        'display_name': 'K-Nearest Neighbors (KNN)',
-    },
+    # 'SVM': {
+    #     'type': 'ml',
+    #     'display_name': 'Support Vector Machine (SVM)',
+    # },
+    # 'KNN': {
+    #     'type': 'ml',
+    #     'display_name': 'K-Nearest Neighbors (KNN)',
+    # },
     'ANN': {
         'type': 'dl_mlp',
         'display_name': 'Artificial Neural Network (ANN/MLP)',

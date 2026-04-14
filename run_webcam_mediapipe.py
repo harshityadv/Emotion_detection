@@ -2,27 +2,55 @@
 # run_webcam_mediapipe.py — Real-time emotion detection with MediaPipe
 # Replaces MTCNN with Google MediaPipe for faster face detection
 # Supports any of the 8 trained models for emotion prediction
+#
+# FIXES vs previous version:
+#   1. Added full smoothing pipeline (prob averaging, label lock,
+#      time lock, box smoothing, temperature scaling) — ported from notebook
+#   2. Fixed Grad-CAM: added None guard for first-frame crash
+#   3. Fixed Grad-CAM: inference transform now includes Grayscale step
+#      (model was trained on grayscale — sending real RGB gave garbage heatmaps)
+#   4. Grad-CAM only enabled for CNN-based models (not ViT/ANN/MLP)
 # ═══════════════════════════════════════════════════════════════════════════
 import sys
 import os
+import time
 import cv2
 import torch
 import numpy as np
 from PIL import Image
+from collections import deque
 import torch.nn.functional as F
+from torchvision import transforms
 
 from config import DEVICE, CKPT_DIR, EMOTIONS, EMOTION_COLORS, NUM_CLASSES
 from face_detection_mediapipe import MediaPipeFaceDetector
-from data_loader import get_inference_transform
 from models import build_model
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# Grad-CAM for CNN-based models (optional visualization)
+# Inference transform
+# FIX: must include Grayscale() — model was trained on grayscale→RGB images.
+# The original get_inference_transform() in data_loader.py skips this step,
+# so we define the correct one here explicitly.
+# ═══════════════════════════════════════════════════════════════════════════
+
+def get_correct_inference_transform(img_size):
+    return transforms.Compose([
+        transforms.Grayscale(num_output_channels=3),   # ← critical: match training
+        transforms.Resize((img_size, img_size)),
+        transforms.ToTensor(),
+        transforms.Normalize([0.485, 0.456, 0.406],
+                             [0.229, 0.224, 0.225]),
+    ])
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Grad-CAM — fixed version
 # ═══════════════════════════════════════════════════════════════════════════
 
 class GradCAM:
     """Gradient-weighted Class Activation Mapping."""
+
     def __init__(self, model, target_layer):
         self.model = model
         self.gradients = None
@@ -44,6 +72,11 @@ class GradCAM:
         self.model.zero_grad()
         score = output[0, class_idx]
         score.backward()
+
+        # FIX: guard against None on first call (before any backward has run)
+        if self.gradients is None or self.activations is None:
+            return np.zeros((224, 224), dtype=np.float32)
+
         weights = self.gradients.mean(dim=(2, 3), keepdim=True)
         cam = (weights * self.activations).sum(dim=1, keepdim=True)
         cam = F.relu(cam)
@@ -62,19 +95,86 @@ def overlay_gradcam(face_bgr, heatmap, alpha=0.45):
     return cv2.addWeighted(face_bgr, 1 - alpha, color, alpha, 0)
 
 
+def get_gradcam_layer(model, model_name):
+    """
+    Return the target conv layer for Grad-CAM, or None if not supported.
+    Only CNN-based models support Grad-CAM (not ViT, ANN, SVM, KNN).
+    """
+    if model_name == 'EfficientNetB0':
+        return model.model.features[-1]
+    elif model_name == 'MobileNetV3':
+        return model.model.features[-1]
+    elif model_name == 'CustomCNN':
+        return model.features[-3]       # last Conv2d before AdaptiveAvgPool
+    elif model_name == 'MiniXception':
+        return model.blocks[-1].sep_block[-2]  # last BN before pool
+    else:
+        return None  # ANN, ViT, SVM, KNN — not applicable
+
+
 # ═══════════════════════════════════════════════════════════════════════════
-# Prediction function
+# Smoothing helpers — ported from notebook Cell 8
 # ═══════════════════════════════════════════════════════════════════════════
 
-def predict_emotion(model, face_bgr, infer_tf, device):
-    """Predict emotion for a face crop (BGR)."""
+def smooth_probs(face_idx, raw_probs, prob_buffers, smooth_window):
+    """Maintain a rolling buffer of prob arrays and return their mean."""
+    if face_idx not in prob_buffers:
+        prob_buffers[face_idx] = deque(maxlen=smooth_window)
+    prob_buffers[face_idx].append(raw_probs)
+    return np.mean(prob_buffers[face_idx], axis=0)
+
+
+def locked_label(face_idx, raw_label, label_state, lock_frames):
+    """Prevent flip-flopping: new emotion must win lock_frames frames in a row."""
+    state = label_state.setdefault(face_idx, {
+        'current': raw_label, 'candidate': raw_label, 'streak': 0
+    })
+    if raw_label == state['candidate']:
+        state['streak'] += 1
+    else:
+        state['candidate'] = raw_label
+        state['streak'] = 1
+    if state['streak'] >= lock_frames:
+        state['current'] = raw_label
+    return state['current']
+
+
+def time_locked_label(face_idx, raw_label, display_state, min_display_ms):
+    """Once an emotion is shown, keep it displayed for at least min_display_ms."""
+    now = time.time()
+    state = display_state.setdefault(face_idx, {'label': raw_label, 'until': 0.0})
+    if now >= state['until']:
+        state['label'] = raw_label
+        state['until'] = now + min_display_ms / 1000.0
+    return state['label']
+
+
+def smooth_box(face_idx, x1, y1, x2, y2, box_buffers, box_smooth):
+    """Average bounding box coords over box_smooth frames to reduce jitter."""
+    if face_idx not in box_buffers:
+        box_buffers[face_idx] = deque(maxlen=box_smooth)
+    box_buffers[face_idx].append((x1, y1, x2, y2))
+    return tuple(int(np.mean([b[i] for b in box_buffers[face_idx]])) for i in range(4))
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# Prediction with temperature scaling
+# ═══════════════════════════════════════════════════════════════════════════
+
+def predict_emotion(model, face_bgr, infer_tf, device, temperature=1.0):
+    """
+    Predict emotion for a face crop (BGR) with optional temperature scaling.
+    temperature > 1 softens the distribution (less spiky), good for smoothing.
+    Returns (label, confidence, probs_array).
+    """
     face_rgb = cv2.cvtColor(face_bgr, cv2.COLOR_BGR2RGB)
-    pil_img = Image.fromarray(face_rgb).convert('L').convert('RGB')  # grayscale→RGB
+    pil_img = Image.fromarray(face_rgb)
     tensor = infer_tf(pil_img).unsqueeze(0).to(device)
     with torch.no_grad():
-        probs = torch.softmax(model(tensor), dim=1)[0].cpu().numpy()
+        logits = model(tensor)
+        probs = torch.softmax(logits / temperature, dim=1)[0].cpu().numpy()
     idx = int(np.argmax(probs))
-    return EMOTIONS[idx], float(probs[idx]), probs
+    return EMOTIONS[idx], float(probs[idx]), probs, tensor
 
 
 # ═══════════════════════════════════════════════════════════════════════════
@@ -85,7 +185,7 @@ def draw_results(frame, x1, y1, x2, y2, label, confidence, probs):
     """Draw bounding box, label, and probability bars."""
     color = EMOTION_COLORS.get(label, (255, 255, 255))
     cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2)
-    tag = f'{label.upper()} {confidence*100:.0f}%'
+    tag = f'{label.upper()} {confidence * 100:.0f}%'
     (tw, th), _ = cv2.getTextSize(tag, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
     cv2.rectangle(frame, (x1, y1 - th - 10), (x1 + tw + 8, y1), color, -1)
     cv2.putText(frame, tag, (x1 + 4, y1 - 6),
@@ -101,7 +201,7 @@ def draw_results(frame, x1, y1, x2, y2, label, confidence, probs):
             cv2.rectangle(frame, (bar_x, by), (bar_x + bar_w, by + 10), (60, 60, 60), -1)
             if filled > 0:
                 cv2.rectangle(frame, (bar_x, by), (bar_x + filled, by + 10), emo_color, -1)
-            cv2.putText(frame, f'{emo[:3]} {prob*100:.0f}%',
+            cv2.putText(frame, f'{emo[:3]} {prob * 100:.0f}%',
                         (bar_x + bar_w + 4, by + 9),
                         cv2.FONT_HERSHEY_SIMPLEX, 0.32, (220, 220, 220), 1, cv2.LINE_AA)
     return frame
@@ -112,7 +212,20 @@ def draw_results(frame, x1, y1, x2, y2, label, confidence, probs):
 # ═══════════════════════════════════════════════════════════════════════════
 
 def main():
-    # Select model (default: EfficientNetB0-large, or pass via CLI)
+    # ── Config ────────────────────────────────────────────────────────────
+    # Smoothing parameters (tweak as needed)
+    SMOOTH_WINDOW  = 7      # Average probabilities over last N frames
+    LOCK_FRAMES    = 4      # Emotion must win N consecutive frames to switch
+    BOX_SMOOTH     = 5      # Average bounding box coords over last N frames
+    TEMPERATURE    = 1.5    # Softmax temperature (>1 = softer, <1 = sharper)
+    MIN_DISPLAY_MS = 600    # Hold displayed emotion for at least this many ms
+
+    # Grad-CAM options
+    GRADCAM_OVERLAY = True  # Set False to disable heatmap overlay
+    GRADCAM_EVERY_N = 3     # Recompute Grad-CAM every N frames (saves FPS)
+    GRADCAM_ALPHA   = 0.40  # Heatmap blend strength
+
+    # ── Model selection ───────────────────────────────────────────────────
     model_name = sys.argv[1] if len(sys.argv) > 1 else 'EfficientNetB0'
     from config import MODEL_REGISTRY
     if model_name not in MODEL_REGISTRY:
@@ -124,7 +237,7 @@ def main():
     img_size = cfg.get('img_size', 224)
     use_device = torch.device('cpu')  # CPU for real-time webcam inference
 
-    # Load model
+    # ── Load model ────────────────────────────────────────────────────────
     ckpt_path = os.path.join(CKPT_DIR, f'{model_name}_best.pth')
     if not os.path.exists(ckpt_path):
         print(f"❌ Checkpoint not found: {ckpt_path}")
@@ -139,67 +252,137 @@ def main():
     model.eval()
     print(f"✓ Model loaded | Val Acc: {ckpt['val_acc']:.4f}")
 
-    # Inference transform
-    infer_tf = get_inference_transform(img_size)
+    # ── Inference transform (with Grayscale fix) ──────────────────────────
+    infer_tf = get_correct_inference_transform(img_size)
 
-    # MediaPipe face detector
+    # ── Grad-CAM setup (CNN models only) ─────────────────────────────────
+    gradcam = None
+    target_layer = get_gradcam_layer(model, model_name)
+    if GRADCAM_OVERLAY and target_layer is not None:
+        gradcam = GradCAM(model, target_layer)
+        print(f"✓ Grad-CAM enabled on {model_name}")
+    elif GRADCAM_OVERLAY:
+        print(f"ℹ Grad-CAM not supported for {model_name} — overlay disabled")
+
+    # ── Per-face smoothing state ──────────────────────────────────────────
+    _prob_buffers  = {}   # face_idx → deque of prob arrays
+    _box_buffers   = {}   # face_idx → deque of (x1, y1, x2, y2)
+    _label_state   = {}   # face_idx → {current, candidate, streak}
+    _display_state = {}   # face_idx → {label, until}
+    _gc_cache      = {}   # face_idx → cached Grad-CAM overlay (BGR)
+
+    # ── MediaPipe face detector ───────────────────────────────────────────
     detector = MediaPipeFaceDetector(model_selection=0, min_detection_confidence=0.5)
 
-    # Webcam
+    # ── Webcam ────────────────────────────────────────────────────────────
     cap = cv2.VideoCapture(0)
     if not cap.isOpened():
         print("❌ Cannot open webcam")
         return
 
-    print(f"▶ Starting live webcam feed with {cfg['display_name']}")
-    print("  Press 'q' to quit, 'm' to cycle models")
+    frame_w = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+    frame_h = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 
-    fps_counter = 0
-    fps_time = cv2.getTickCount()
-    fps_display = 0
+    gc_label     = 'GradCAM:ON' if (gradcam is not None) else 'GradCAM:OFF'
+    smooth_label = f'W{SMOOTH_WINDOW}/L{LOCK_FRAMES}/T{TEMPERATURE}'
+    print(f"▶ Starting live webcam feed with {cfg['display_name']}")
+    print(f"  {gc_label}  Smooth:{smooth_label}")
+    print("  Press 'q' to quit | 's' to save snapshot")
+
+    fps_display = 0.0
+    t_prev      = time.time()
+    frame_no    = 0
 
     while cap.isOpened():
         ret, frame = cap.read()
         if not ret:
             break
 
-        # Detect faces with MediaPipe
+        frame_no += 1
+        t_now        = time.time()
+        fps_display  = 0.9 * fps_display + 0.1 * (1.0 / max(t_now - t_prev, 1e-6))
+        t_prev       = t_now
+
+        # ── Detect faces with MediaPipe ───────────────────────────────────
         faces = detector.detect_faces(frame)
 
-        for (x1, y1, x2, y2, det_conf) in faces:
+        for face_idx, (x1r, y1r, x2r, y2r, det_conf) in enumerate(faces):
+            # Smooth bounding box to reduce jitter
+            x1, y1, x2, y2 = smooth_box(
+                face_idx, x1r, y1r, x2r, y2r, _box_buffers, BOX_SMOOTH
+            )
+
             face_crop = frame[y1:y2, x1:x2]
             if face_crop.size == 0:
                 continue
 
-            # Predict emotion
-            label, conf, probs = predict_emotion(model, face_crop, infer_tf, use_device)
+            # ── Predict with temperature scaling ─────────────────────────
+            _, _, raw_probs, tensor = predict_emotion(
+                model, face_crop, infer_tf, use_device, TEMPERATURE
+            )
 
-            # Draw results
-            draw_results(frame, x1, y1, x2, y2, label, conf, probs)
+            # ── Smooth probabilities over rolling window ──────────────────
+            smoothed_probs = smooth_probs(
+                face_idx, raw_probs, _prob_buffers, SMOOTH_WINDOW
+            )
 
-        # FPS counter
-        fps_counter += 1
-        elapsed = (cv2.getTickCount() - fps_time) / cv2.getTickFrequency()
-        if elapsed >= 1.0:
-            fps_display = fps_counter / elapsed
-            fps_counter = 0
-            fps_time = cv2.getTickCount()
+            # ── Derive label from smoothed probs ─────────────────────────
+            raw_label  = EMOTIONS[int(np.argmax(smoothed_probs))]
+            confidence = float(smoothed_probs.max())
 
-        cv2.putText(frame, f'FPS: {fps_display:.1f} | Model: {model_name}',
-                    (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 255, 0), 2)
-        cv2.putText(frame, 'MediaPipe Face Detection',
-                    (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (200, 200, 200), 1)
+            # ── Label lock: must win LOCK_FRAMES consecutive frames ───────
+            locked = locked_label(face_idx, raw_label, _label_state, LOCK_FRAMES)
+
+            # ── Time lock: hold displayed emotion for MIN_DISPLAY_MS ──────
+            display_label = time_locked_label(
+                face_idx, locked, _display_state, MIN_DISPLAY_MS
+            )
+
+            # ── Grad-CAM overlay (optional, CNN models only) ──────────────
+            if gradcam is not None:
+                compute_gc = (frame_no % GRADCAM_EVERY_N == 0) or (face_idx not in _gc_cache)
+                if compute_gc:
+                    face_rgb_gc = cv2.cvtColor(face_crop, cv2.COLOR_BGR2RGB)
+                    pil_gc      = Image.fromarray(face_rgb_gc)
+                    tensor_gc   = infer_tf(pil_gc).unsqueeze(0).to(use_device)
+                    with torch.enable_grad():
+                        heatmap = gradcam.generate(tensor_gc)
+                    _gc_cache[face_idx] = overlay_gradcam(face_crop, heatmap, alpha=GRADCAM_ALPHA)
+
+                if face_idx in _gc_cache:
+                    gc_resized = cv2.resize(_gc_cache[face_idx], (x2 - x1, y2 - y1))
+                    frame[y1:y2, x1:x2] = gc_resized
+
+            # ── Draw results using smoothed values ────────────────────────
+            frame = draw_results(
+                frame, x1, y1, x2, y2, display_label, confidence, smoothed_probs
+            )
+
+        # ── HUD ───────────────────────────────────────────────────────────
+        cv2.putText(
+            frame,
+            f'FPS: {fps_display:.1f} | {model_name} | {gc_label} | Smooth:{smooth_label}',
+            (10, 25), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 180), 2
+        )
+        cv2.putText(
+            frame, 'MediaPipe  [Q=quit | S=snapshot]',
+            (10, 50), cv2.FONT_HERSHEY_SIMPLEX, 0.45, (200, 200, 200), 1
+        )
 
         cv2.imshow('Emotion Detection (MediaPipe)', frame)
 
         key = cv2.waitKey(1) & 0xFF
         if key == ord('q'):
             break
+        elif key == ord('s'):
+            snap = f'snapshot_{frame_no}.jpg'
+            cv2.imwrite(snap, frame)
+            print(f'📸 Snapshot saved: {snap}')
 
     cap.release()
     cv2.destroyAllWindows()
     detector.close()
-    print("✓ Webcam closed.")
+    print(f"✓ Webcam closed. Processed {frame_no} frames.")
 
 
 if __name__ == '__main__':
