@@ -7,7 +7,6 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.x-EE4C2C?style=for-the-badge&logo=pytorch&logoColor=white)](https://pytorch.org/)
 [![MediaPipe](https://img.shields.io/badge/MediaPipe-0.10.20-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://mediapipe.dev/)
 [![scikit-learn](https://img.shields.io/badge/scikit--learn-Latest-F7931E?style=for-the-badge&logo=scikitlearn&logoColor=white)](https://scikit-learn.org/)
-[![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
 [![Dataset](https://img.shields.io/badge/Dataset-FER2013-8B5CF6?style=for-the-badge)](https://www.kaggle.com/datasets/msambare/fer2013)
 
 *A comprehensive benchmark of Traditional ML, Transfer Learning, and a novel Custom CNN architecture for real-time facial emotion recognition.*
