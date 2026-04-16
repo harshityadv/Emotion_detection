@@ -1,0 +1,434 @@
+Device: cuda
+Models in registry: ['ANN', 'CustomCNN', 'MobileNetV3', 'EfficientNetB2', 'MiniXception', 'ViTTiny', 'ResNet50']
+
+[DataLoader] Building 48×48 loaders ...
+[DataLoader] Classes: ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
+  angry     : 3995 images
+  disgust   : 436 images
+  fear      : 4097 images
+  happy     : 7215 images
+  neutral   : 4965 images
+  sad       : 4830 images
+  surprise  : 3171 images
+  Class weights (CPU): ['0.480', '4.398', '0.468', '0.266', '0.386', '0.397', '0.605']
+  Train: 24403 | Val: 4306
+  Test:  7178
+
+======================================================================
+  Training: ANN
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=0 params @ lr=3.00e-05  |  head=14 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 2.1743  Acc: 0.0936  |  Val Loss: 2.1078  Acc: 0.1254  ✓ saved (best=0.1254)
+  Epoch [02/50]  Train Loss: 2.1285  Acc: 0.1086  |  Val Loss: 2.0901  Acc: 0.1080  (patience 1/12)
+  Epoch [03/50]  Train Loss: 2.1152  Acc: 0.1142  |  Val Loss: 2.0714  Acc: 0.1640  ✓ saved (best=0.1640)
+  Epoch [04/50]  Train Loss: 2.1043  Acc: 0.1322  |  Val Loss: 2.0638  Acc: 0.1797  ✓ saved (best=0.1797)
+  Epoch [05/50]  Train Loss: 2.0978  Acc: 0.1302  |  Val Loss: 2.0562  Acc: 0.1800  ✓ saved (best=0.1800)
+  Epoch [06/50]  Train Loss: 2.0888  Acc: 0.1350  |  Val Loss: 2.0502  Acc: 0.1600  (patience 1/12)
+  Epoch [07/50]  Train Loss: 2.0784  Acc: 0.1494  |  Val Loss: 2.0470  Acc: 0.2213  ✓ saved (best=0.2213)
+  Epoch [08/50]  Train Loss: 2.0737  Acc: 0.1548  |  Val Loss: 2.0468  Acc: 0.2376  ✓ saved (best=0.2376)
+  Epoch [09/50]  Train Loss: 2.0715  Acc: 0.1558  |  Val Loss: 2.0334  Acc: 0.2387  ✓ saved (best=0.2387)
+  Epoch [10/50]  Train Loss: 2.0649  Acc: 0.1640  |  Val Loss: 2.0295  Acc: 0.2459  ✓ saved (best=0.2459)
+  Epoch [11/50]  Train Loss: 2.0610  Acc: 0.1685  |  Val Loss: 2.0299  Acc: 0.2859  ✓ saved (best=0.2859)
+  Epoch [12/50]  Train Loss: 2.0630  Acc: 0.1667  |  Val Loss: 2.0281  Acc: 0.2415  (patience 1/12)
+  Epoch [13/50]  Train Loss: 2.0565  Acc: 0.1906  |  Val Loss: 2.0205  Acc: 0.2218  (patience 2/12)
+  Epoch [14/50]  Train Loss: 2.0512  Acc: 0.1796  |  Val Loss: 2.0122  Acc: 0.2664  (patience 3/12)
+  Epoch [15/50]  Train Loss: 2.0499  Acc: 0.1867  |  Val Loss: 2.0169  Acc: 0.2719  (patience 4/12)
+  Epoch [16/50]  Train Loss: 2.0447  Acc: 0.1871  |  Val Loss: 2.0017  Acc: 0.2627  (patience 5/12)
+  Epoch [17/50]  Train Loss: 2.0374  Acc: 0.1922  |  Val Loss: 2.0047  Acc: 0.2791  (patience 6/12)
+  Epoch [18/50]  Train Loss: 2.0381  Acc: 0.1970  |  Val Loss: 1.9973  Acc: 0.2719  (patience 7/12)
+  Epoch [19/50]  Train Loss: 2.0353  Acc: 0.2011  |  Val Loss: 2.0027  Acc: 0.2743  (patience 8/12)
+  Epoch [20/50]  Train Loss: 2.0321  Acc: 0.2051  |  Val Loss: 1.9940  Acc: 0.2780  (patience 9/12)
+  Epoch [21/50]  Train Loss: 2.0292  Acc: 0.2056  |  Val Loss: 1.9918  Acc: 0.2868  ✓ saved (best=0.2868)
+  Epoch [22/50]  Train Loss: 2.0290  Acc: 0.2074  |  Val Loss: 1.9913  Acc: 0.2571  (patience 1/12)
+  Epoch [23/50]  Train Loss: 2.0249  Acc: 0.2135  |  Val Loss: 1.9855  Acc: 0.2754  (patience 2/12)
+  Epoch [24/50]  Train Loss: 2.0224  Acc: 0.2143  |  Val Loss: 1.9859  Acc: 0.2856  (patience 3/12)
+  Epoch [25/50]  Train Loss: 2.0241  Acc: 0.2162  |  Val Loss: 1.9822  Acc: 0.2840  (patience 4/12)
+  Epoch [26/50]  Train Loss: 2.0165  Acc: 0.2182  |  Val Loss: 1.9811  Acc: 0.2924  ✓ saved (best=0.2924)
+  Epoch [27/50]  Train Loss: 2.0197  Acc: 0.2239  |  Val Loss: 1.9764  Acc: 0.2970  ✓ saved (best=0.2970)
+  Epoch [28/50]  Train Loss: 2.0151  Acc: 0.2215  |  Val Loss: 1.9730  Acc: 0.2819  (patience 1/12)
+  Epoch [29/50]  Train Loss: 2.0125  Acc: 0.2229  |  Val Loss: 1.9697  Acc: 0.2868  (patience 2/12)
+  Epoch [30/50]  Train Loss: 2.0050  Acc: 0.2322  |  Val Loss: 1.9705  Acc: 0.2699  (patience 3/12)
+  Epoch [31/50]  Train Loss: 2.0092  Acc: 0.2330  |  Val Loss: 1.9681  Acc: 0.2942  (patience 4/12)
+  Epoch [32/50]  Train Loss: 2.0065  Acc: 0.2310  |  Val Loss: 1.9687  Acc: 0.2803  (patience 5/12)
+  Epoch [33/50]  Train Loss: 2.0027  Acc: 0.2328  |  Val Loss: 1.9633  Acc: 0.2912  (patience 6/12)
+  Epoch [34/50]  Train Loss: 2.0024  Acc: 0.2352  |  Val Loss: 1.9611  Acc: 0.2840  (patience 7/12)
+  Epoch [35/50]  Train Loss: 2.0012  Acc: 0.2391  |  Val Loss: 1.9637  Acc: 0.2815  (patience 8/12)
+  Epoch [36/50]  Train Loss: 1.9999  Acc: 0.2418  |  Val Loss: 1.9565  Acc: 0.2924  (patience 9/12)
+  Epoch [37/50]  Train Loss: 1.9962  Acc: 0.2403  |  Val Loss: 1.9591  Acc: 0.2873  (patience 10/12)
+  Epoch [38/50]  Train Loss: 1.9976  Acc: 0.2472  |  Val Loss: 1.9567  Acc: 0.2938  (patience 11/12)
+  Epoch [39/50]  Train Loss: 1.9943  Acc: 0.2382  |  Val Loss: 1.9584  Acc: 0.2942  (patience 12/12)
+  ⚠  Early stopping triggered at epoch 39
+  Training complete in 4.5 min  |  Best Val Acc: 0.2970
+
+======================================================================
+  Training: CustomCNN
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=32 params @ lr=3.00e-05  |  head=10 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 2.1882  Acc: 0.0665  |  Val Loss: 2.1535  Acc: 0.0332  ✓ saved (best=0.0332)
+  Epoch [02/50]  Train Loss: 2.1621  Acc: 0.0518  |  Val Loss: 2.1465  Acc: 0.0146  (patience 1/12)
+  Epoch [03/50]  Train Loss: 2.1520  Acc: 0.0360  |  Val Loss: 2.1404  Acc: 0.0423  ✓ saved (best=0.0423)
+  Epoch [04/50]  Train Loss: 2.1490  Acc: 0.0393  |  Val Loss: 2.1376  Acc: 0.0165  (patience 1/12)
+  Epoch [05/50]  Train Loss: 2.1433  Acc: 0.0335  |  Val Loss: 2.1457  Acc: 0.0160  (patience 2/12)
+  Epoch [06/50]  Train Loss: 2.1421  Acc: 0.0354  |  Val Loss: 2.1393  Acc: 0.0149  (patience 3/12)
+  Epoch [07/50]  Train Loss: 2.1409  Acc: 0.0354  |  Val Loss: 2.1357  Acc: 0.0167  (patience 4/12)
+  Epoch [08/50]  Train Loss: 2.1363  Acc: 0.0427  |  Val Loss: 2.1333  Acc: 0.0137  (patience 5/12)
+  Epoch [09/50]  Train Loss: 2.1312  Acc: 0.0412  |  Val Loss: 2.1230  Acc: 0.0478  ✓ saved (best=0.0478)
+  Epoch [10/50]  Train Loss: 2.1259  Acc: 0.0529  |  Val Loss: 2.1023  Acc: 0.0595  ✓ saved (best=0.0595)
+  Epoch [11/50]  Train Loss: 2.1119  Acc: 0.0707  |  Val Loss: 2.0682  Acc: 0.0859  ✓ saved (best=0.0859)
+  Epoch [12/50]  Train Loss: 2.0883  Acc: 0.0929  |  Val Loss: 2.0477  Acc: 0.0952  ✓ saved (best=0.0952)
+  Epoch [13/50]  Train Loss: 2.0767  Acc: 0.1065  |  Val Loss: 2.0305  Acc: 0.0980  ✓ saved (best=0.0980)
+  Epoch [14/50]  Train Loss: 2.0589  Acc: 0.1166  |  Val Loss: 2.0115  Acc: 0.1461  ✓ saved (best=0.1461)
+  Epoch [15/50]  Train Loss: 2.0479  Acc: 0.1475  |  Val Loss: 1.9951  Acc: 0.2243  ✓ saved (best=0.2243)
+  Epoch [16/50]  Train Loss: 2.0347  Acc: 0.1672  |  Val Loss: 1.9776  Acc: 0.2188  (patience 1/12)
+  Epoch [17/50]  Train Loss: 2.0145  Acc: 0.1982  |  Val Loss: 1.9579  Acc: 0.3024  ✓ saved (best=0.3024)
+  Epoch [18/50]  Train Loss: 1.9999  Acc: 0.2205  |  Val Loss: 1.9373  Acc: 0.3124  ✓ saved (best=0.3124)
+  Epoch [19/50]  Train Loss: 1.9808  Acc: 0.2427  |  Val Loss: 1.9240  Acc: 0.3251  ✓ saved (best=0.3251)
+  Epoch [20/50]  Train Loss: 1.9660  Acc: 0.2587  |  Val Loss: 1.9022  Acc: 0.3288  ✓ saved (best=0.3288)
+  Epoch [21/50]  Train Loss: 1.9485  Acc: 0.2804  |  Val Loss: 1.8986  Acc: 0.3377  ✓ saved (best=0.3377)
+  Epoch [22/50]  Train Loss: 1.9381  Acc: 0.2968  |  Val Loss: 1.8754  Acc: 0.3572  ✓ saved (best=0.3572)
+  Epoch [23/50]  Train Loss: 1.9246  Acc: 0.3030  |  Val Loss: 1.8572  Acc: 0.3755  ✓ saved (best=0.3755)
+  Epoch [24/50]  Train Loss: 1.9143  Acc: 0.3220  |  Val Loss: 1.8464  Acc: 0.3864  ✓ saved (best=0.3864)
+  Epoch [25/50]  Train Loss: 1.9007  Acc: 0.3282  |  Val Loss: 1.8431  Acc: 0.3753  (patience 1/12)
+  Epoch [26/50]  Train Loss: 1.8971  Acc: 0.3332  |  Val Loss: 1.8404  Acc: 0.3918  ✓ saved (best=0.3918)
+  Epoch [27/50]  Train Loss: 1.8865  Acc: 0.3408  |  Val Loss: 1.8306  Acc: 0.3848  (patience 1/12)
+  Epoch [28/50]  Train Loss: 1.8844  Acc: 0.3471  |  Val Loss: 1.8218  Acc: 0.3792  (patience 2/12)
+  Epoch [29/50]  Train Loss: 1.8773  Acc: 0.3466  |  Val Loss: 1.8168  Acc: 0.4020  ✓ saved (best=0.4020)
+  Epoch [30/50]  Train Loss: 1.8725  Acc: 0.3547  |  Val Loss: 1.8108  Acc: 0.4001  (patience 1/12)
+  Epoch [31/50]  Train Loss: 1.8697  Acc: 0.3532  |  Val Loss: 1.8131  Acc: 0.4006  (patience 2/12)
+  Epoch [32/50]  Train Loss: 1.8657  Acc: 0.3604  |  Val Loss: 1.8038  Acc: 0.4111  ✓ saved (best=0.4111)
+  Epoch [33/50]  Train Loss: 1.8565  Acc: 0.3650  |  Val Loss: 1.7993  Acc: 0.4194  ✓ saved (best=0.4194)
+  Epoch [34/50]  Train Loss: 1.8593  Acc: 0.3670  |  Val Loss: 1.7992  Acc: 0.4243  ✓ saved (best=0.4243)
+  Epoch [35/50]  Train Loss: 1.8522  Acc: 0.3695  |  Val Loss: 1.7954  Acc: 0.4234  (patience 1/12)
+  Epoch [36/50]  Train Loss: 1.8498  Acc: 0.3763  |  Val Loss: 1.7963  Acc: 0.4317  ✓ saved (best=0.4317)
+  Epoch [37/50]  Train Loss: 1.8471  Acc: 0.3779  |  Val Loss: 1.7866  Acc: 0.4194  (patience 1/12)
+  Epoch [38/50]  Train Loss: 1.8434  Acc: 0.3768  |  Val Loss: 1.7877  Acc: 0.4354  ✓ saved (best=0.4354)
+  Epoch [39/50]  Train Loss: 1.8451  Acc: 0.3825  |  Val Loss: 1.7878  Acc: 0.4234  (patience 1/12)
+  Epoch [40/50]  Train Loss: 1.8403  Acc: 0.3842  |  Val Loss: 1.7859  Acc: 0.4268  (patience 2/12)
+  Epoch [41/50]  Train Loss: 1.8418  Acc: 0.3833  |  Val Loss: 1.7845  Acc: 0.4340  (patience 3/12)
+  Epoch [42/50]  Train Loss: 1.8400  Acc: 0.3840  |  Val Loss: 1.7833  Acc: 0.4371  ✓ saved (best=0.4371)
+  Epoch [43/50]  Train Loss: 1.8404  Acc: 0.3891  |  Val Loss: 1.7836  Acc: 0.4322  (patience 1/12)
+  Epoch [44/50]  Train Loss: 1.8347  Acc: 0.3841  |  Val Loss: 1.7771  Acc: 0.4338  (patience 2/12)
+  Epoch [45/50]  Train Loss: 1.8337  Acc: 0.3878  |  Val Loss: 1.7784  Acc: 0.4285  (patience 3/12)
+  Epoch [46/50]  Train Loss: 1.8308  Acc: 0.3874  |  Val Loss: 1.7787  Acc: 0.4373  ✓ saved (best=0.4373)
+  Epoch [47/50]  Train Loss: 1.8349  Acc: 0.3872  |  Val Loss: 1.7803  Acc: 0.4396  ✓ saved (best=0.4396)
+  Epoch [48/50]  Train Loss: 1.8301  Acc: 0.3877  |  Val Loss: 1.7768  Acc: 0.4306  (patience 1/12)
+  Epoch [49/50]  Train Loss: 1.8360  Acc: 0.3859  |  Val Loss: 1.7787  Acc: 0.4387  (patience 2/12)
+  Epoch [50/50]  Train Loss: 1.8368  Acc: 0.3854  |  Val Loss: 1.7795  Acc: 0.4387  (patience 3/12)
+  Training complete in 6.2 min  |  Best Val Acc: 0.4396
+
+[DataLoader] Building 224×224 loaders ...
+[DataLoader] Classes: ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
+  angry     : 3995 images
+  disgust   : 436 images
+  fear      : 4097 images
+  happy     : 7215 images
+  neutral   : 4965 images
+  sad       : 4830 images
+  surprise  : 3171 images
+  Class weights (CPU): ['0.480', '4.398', '0.468', '0.266', '0.386', '0.397', '0.605']
+  Train: 24403 | Val: 4306
+  Test:  7178
+
+======================================================================
+  Training: MobileNetV3
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=30 params @ lr=3.00e-05  |  head=22 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 1.9058  Acc: 0.3226  |  Val Loss: 1.8297  Acc: 0.3416  ✓ saved (best=0.3416)
+  Epoch [02/50]  Train Loss: 1.7420  Acc: 0.4367  |  Val Loss: 1.7019  Acc: 0.4819  ✓ saved (best=0.4819)
+  Epoch [03/50]  Train Loss: 1.6748  Acc: 0.4882  |  Val Loss: 1.6579  Acc: 0.4935  ✓ saved (best=0.4935)
+  Epoch [04/50]  Train Loss: 1.6391  Acc: 0.5076  |  Val Loss: 1.6512  Acc: 0.5272  ✓ saved (best=0.5272)
+  Epoch [05/50]  Train Loss: 1.6052  Acc: 0.5262  |  Val Loss: 1.6082  Acc: 0.5309  ✓ saved (best=0.5309)
+  Epoch [06/50]  Train Loss: 1.5787  Acc: 0.5486  |  Val Loss: 1.5946  Acc: 0.5646  ✓ saved (best=0.5646)
+  Epoch [07/50]  Train Loss: 1.5606  Acc: 0.5523  |  Val Loss: 1.5872  Acc: 0.5824  ✓ saved (best=0.5824)
+  Epoch [08/50]  Train Loss: 1.5354  Acc: 0.5688  |  Val Loss: 1.5881  Acc: 0.5581  (patience 1/12)
+  Epoch [09/50]  Train Loss: 1.5185  Acc: 0.5786  |  Val Loss: 1.5661  Acc: 0.5866  ✓ saved (best=0.5866)
+  Epoch [10/50]  Train Loss: 1.5028  Acc: 0.5890  |  Val Loss: 1.5591  Acc: 0.5996  ✓ saved (best=0.5996)
+  Epoch [11/50]  Train Loss: 1.4896  Acc: 0.6012  |  Val Loss: 1.5609  Acc: 0.5687  (patience 1/12)
+  Epoch [12/50]  Train Loss: 1.4722  Acc: 0.6069  |  Val Loss: 1.5531  Acc: 0.5794  (patience 2/12)
+  Epoch [13/50]  Train Loss: 1.4550  Acc: 0.6152  |  Val Loss: 1.5591  Acc: 0.5906  (patience 3/12)
+  Epoch [14/50]  Train Loss: 1.4370  Acc: 0.6242  |  Val Loss: 1.5550  Acc: 0.5845  (patience 4/12)
+  Epoch [15/50]  Train Loss: 1.4305  Acc: 0.6286  |  Val Loss: 1.5543  Acc: 0.6024  ✓ saved (best=0.6024)
+  Epoch [16/50]  Train Loss: 1.4209  Acc: 0.6348  |  Val Loss: 1.5526  Acc: 0.5813  (patience 1/12)
+  Epoch [17/50]  Train Loss: 1.4021  Acc: 0.6465  |  Val Loss: 1.5272  Acc: 0.6117  ✓ saved (best=0.6117)
+  Epoch [18/50]  Train Loss: 1.3938  Acc: 0.6520  |  Val Loss: 1.5473  Acc: 0.5959  (patience 1/12)
+  Epoch [19/50]  Train Loss: 1.3842  Acc: 0.6556  |  Val Loss: 1.5558  Acc: 0.5992  (patience 2/12)
+  Epoch [20/50]  Train Loss: 1.3649  Acc: 0.6623  |  Val Loss: 1.5320  Acc: 0.6103  (patience 3/12)
+  Epoch [21/50]  Train Loss: 1.3541  Acc: 0.6729  |  Val Loss: 1.5396  Acc: 0.6050  (patience 4/12)
+  Epoch [22/50]  Train Loss: 1.3469  Acc: 0.6732  |  Val Loss: 1.5404  Acc: 0.6233  ✓ saved (best=0.6233)
+  Epoch [23/50]  Train Loss: 1.3395  Acc: 0.6790  |  Val Loss: 1.5285  Acc: 0.6129  (patience 1/12)
+  Epoch [24/50]  Train Loss: 1.3251  Acc: 0.6833  |  Val Loss: 1.5312  Acc: 0.6101  (patience 2/12)
+  Epoch [25/50]  Train Loss: 1.3228  Acc: 0.6902  |  Val Loss: 1.5435  Acc: 0.6222  (patience 3/12)
+  Epoch [26/50]  Train Loss: 1.3135  Acc: 0.6970  |  Val Loss: 1.5326  Acc: 0.6208  (patience 4/12)
+  Epoch [27/50]  Train Loss: 1.3015  Acc: 0.7029  |  Val Loss: 1.5358  Acc: 0.6140  (patience 5/12)
+  Epoch [28/50]  Train Loss: 1.2966  Acc: 0.7017  |  Val Loss: 1.5478  Acc: 0.6282  ✓ saved (best=0.6282)
+  Epoch [29/50]  Train Loss: 1.2938  Acc: 0.7017  |  Val Loss: 1.5492  Acc: 0.6233  (patience 1/12)
+  Epoch [30/50]  Train Loss: 1.2818  Acc: 0.7127  |  Val Loss: 1.5406  Acc: 0.6217  (patience 2/12)
+  Epoch [31/50]  Train Loss: 1.2782  Acc: 0.7127  |  Val Loss: 1.5390  Acc: 0.6240  (patience 3/12)
+  Epoch [32/50]  Train Loss: 1.2679  Acc: 0.7161  |  Val Loss: 1.5365  Acc: 0.6301  ✓ saved (best=0.6301)
+  Epoch [33/50]  Train Loss: 1.2650  Acc: 0.7205  |  Val Loss: 1.5432  Acc: 0.6296  (patience 1/12)
+  Epoch [34/50]  Train Loss: 1.2606  Acc: 0.7241  |  Val Loss: 1.5335  Acc: 0.6294  (patience 2/12)
+  Epoch [35/50]  Train Loss: 1.2517  Acc: 0.7310  |  Val Loss: 1.5416  Acc: 0.6317  ✓ saved (best=0.6317)
+  Epoch [36/50]  Train Loss: 1.2455  Acc: 0.7300  |  Val Loss: 1.5413  Acc: 0.6263  (patience 1/12)
+  Epoch [37/50]  Train Loss: 1.2416  Acc: 0.7368  |  Val Loss: 1.5388  Acc: 0.6305  (patience 2/12)
+  Epoch [38/50]  Train Loss: 1.2459  Acc: 0.7364  |  Val Loss: 1.5392  Acc: 0.6291  (patience 3/12)
+  Epoch [39/50]  Train Loss: 1.2355  Acc: 0.7387  |  Val Loss: 1.5355  Acc: 0.6317  (patience 4/12)
+  Epoch [40/50]  Train Loss: 1.2297  Acc: 0.7389  |  Val Loss: 1.5403  Acc: 0.6263  (patience 5/12)
+  Epoch [41/50]  Train Loss: 1.2278  Acc: 0.7443  |  Val Loss: 1.5407  Acc: 0.6301  (patience 6/12)
+  Epoch [42/50]  Train Loss: 1.2211  Acc: 0.7468  |  Val Loss: 1.5430  Acc: 0.6307  (patience 7/12)
+  Epoch [43/50]  Train Loss: 1.2218  Acc: 0.7469  |  Val Loss: 1.5403  Acc: 0.6312  (patience 8/12)
+  Epoch [44/50]  Train Loss: 1.2186  Acc: 0.7486  |  Val Loss: 1.5400  Acc: 0.6310  (patience 9/12)
+  Epoch [45/50]  Train Loss: 1.2173  Acc: 0.7523  |  Val Loss: 1.5446  Acc: 0.6349  ✓ saved (best=0.6349)
+  Epoch [46/50]  Train Loss: 1.2229  Acc: 0.7460  |  Val Loss: 1.5438  Acc: 0.6354  ✓ saved (best=0.6354)
+  Epoch [47/50]  Train Loss: 1.2179  Acc: 0.7495  |  Val Loss: 1.5417  Acc: 0.6349  (patience 1/12)
+  Epoch [48/50]  Train Loss: 1.2213  Acc: 0.7470  |  Val Loss: 1.5439  Acc: 0.6361  ✓ saved (best=0.6361)
+  Epoch [49/50]  Train Loss: 1.2185  Acc: 0.7482  |  Val Loss: 1.5422  Acc: 0.6363  ✓ saved (best=0.6363)
+  Epoch [50/50]  Train Loss: 1.2199  Acc: 0.7482  |  Val Loss: 1.5407  Acc: 0.6361  (patience 1/12)
+  Training complete in 24.7 min  |  Best Val Acc: 0.6363
+
+======================================================================
+  Training: EfficientNetB2
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=66 params @ lr=3.00e-05  |  head=38 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 1.9911  Acc: 0.2514  |  Val Loss: 1.8469  Acc: 0.3974  ✓ saved (best=0.3974)
+  Epoch [02/50]  Train Loss: 1.7913  Acc: 0.4061  |  Val Loss: 1.7314  Acc: 0.4824  ✓ saved (best=0.4824)
+  Epoch [03/50]  Train Loss: 1.7178  Acc: 0.4622  |  Val Loss: 1.6518  Acc: 0.5290  ✓ saved (best=0.5290)
+  Epoch [04/50]  Train Loss: 1.6576  Acc: 0.5047  |  Val Loss: 1.6342  Acc: 0.5309  ✓ saved (best=0.5309)
+  Epoch [05/50]  Train Loss: 1.6137  Acc: 0.5237  |  Val Loss: 1.6224  Acc: 0.5583  ✓ saved (best=0.5583)
+  Epoch [06/50]  Train Loss: 1.5870  Acc: 0.5429  |  Val Loss: 1.5865  Acc: 0.5446  (patience 1/12)
+  Epoch [07/50]  Train Loss: 1.5525  Acc: 0.5617  |  Val Loss: 1.5832  Acc: 0.5455  (patience 2/12)
+  Epoch [08/50]  Train Loss: 1.5274  Acc: 0.5783  |  Val Loss: 1.5536  Acc: 0.5745  ✓ saved (best=0.5745)
+  Epoch [09/50]  Train Loss: 1.5065  Acc: 0.5902  |  Val Loss: 1.5412  Acc: 0.5952  ✓ saved (best=0.5952)
+  Epoch [10/50]  Train Loss: 1.4824  Acc: 0.6037  |  Val Loss: 1.5314  Acc: 0.5994  ✓ saved (best=0.5994)
+  Epoch [11/50]  Train Loss: 1.4645  Acc: 0.6122  |  Val Loss: 1.5113  Acc: 0.6068  ✓ saved (best=0.6068)
+  Epoch [12/50]  Train Loss: 1.4435  Acc: 0.6232  |  Val Loss: 1.5258  Acc: 0.6033  (patience 1/12)
+  Epoch [13/50]  Train Loss: 1.4261  Acc: 0.6321  |  Val Loss: 1.5074  Acc: 0.6115  ✓ saved (best=0.6115)
+  Epoch [14/50]  Train Loss: 1.4058  Acc: 0.6441  |  Val Loss: 1.5160  Acc: 0.6112  (patience 1/12)
+  Epoch [15/50]  Train Loss: 1.4018  Acc: 0.6477  |  Val Loss: 1.4966  Acc: 0.6266  ✓ saved (best=0.6266)
+  Epoch [16/50]  Train Loss: 1.3753  Acc: 0.6619  |  Val Loss: 1.5050  Acc: 0.6342  ✓ saved (best=0.6342)
+  Epoch [17/50]  Train Loss: 1.3617  Acc: 0.6678  |  Val Loss: 1.4980  Acc: 0.6289  (patience 1/12)
+  Epoch [18/50]  Train Loss: 1.3527  Acc: 0.6746  |  Val Loss: 1.4975  Acc: 0.6352  ✓ saved (best=0.6352)
+  Epoch [19/50]  Train Loss: 1.3338  Acc: 0.6813  |  Val Loss: 1.4986  Acc: 0.6301  (patience 1/12)
+  Epoch [20/50]  Train Loss: 1.3174  Acc: 0.6888  |  Val Loss: 1.5110  Acc: 0.6301  (patience 2/12)
+  Epoch [21/50]  Train Loss: 1.3098  Acc: 0.6933  |  Val Loss: 1.4915  Acc: 0.6410  ✓ saved (best=0.6410)
+  Epoch [22/50]  Train Loss: 1.2941  Acc: 0.7022  |  Val Loss: 1.4991  Acc: 0.6403  (patience 1/12)
+  Epoch [23/50]  Train Loss: 1.2862  Acc: 0.7092  |  Val Loss: 1.5007  Acc: 0.6389  (patience 2/12)
+  Epoch [24/50]  Train Loss: 1.2759  Acc: 0.7138  |  Val Loss: 1.4938  Acc: 0.6442  ✓ saved (best=0.6442)
+  Epoch [25/50]  Train Loss: 1.2695  Acc: 0.7191  |  Val Loss: 1.4920  Acc: 0.6419  (patience 1/12)
+  Epoch [26/50]  Train Loss: 1.2552  Acc: 0.7271  |  Val Loss: 1.5021  Acc: 0.6389  (patience 2/12)
+  Epoch [27/50]  Train Loss: 1.2477  Acc: 0.7292  |  Val Loss: 1.4981  Acc: 0.6424  (patience 3/12)
+  Epoch [28/50]  Train Loss: 1.2355  Acc: 0.7352  |  Val Loss: 1.5007  Acc: 0.6465  ✓ saved (best=0.6465)
+  Epoch [29/50]  Train Loss: 1.2287  Acc: 0.7401  |  Val Loss: 1.4925  Acc: 0.6468  ✓ saved (best=0.6468)
+  Epoch [30/50]  Train Loss: 1.2161  Acc: 0.7461  |  Val Loss: 1.5057  Acc: 0.6433  (patience 1/12)
+  Epoch [31/50]  Train Loss: 1.2132  Acc: 0.7489  |  Val Loss: 1.5063  Acc: 0.6440  (patience 2/12)
+  Epoch [32/50]  Train Loss: 1.2025  Acc: 0.7538  |  Val Loss: 1.5074  Acc: 0.6398  (patience 3/12)
+  Epoch [33/50]  Train Loss: 1.1958  Acc: 0.7584  |  Val Loss: 1.5070  Acc: 0.6491  ✓ saved (best=0.6491)
+  Epoch [34/50]  Train Loss: 1.1978  Acc: 0.7572  |  Val Loss: 1.5069  Acc: 0.6442  (patience 1/12)
+  Epoch [35/50]  Train Loss: 1.1794  Acc: 0.7634  |  Val Loss: 1.5132  Acc: 0.6442  (patience 2/12)
+  Epoch [36/50]  Train Loss: 1.1796  Acc: 0.7683  |  Val Loss: 1.5063  Acc: 0.6454  (patience 3/12)
+  Epoch [37/50]  Train Loss: 1.1720  Acc: 0.7689  |  Val Loss: 1.5138  Acc: 0.6431  (patience 4/12)
+  Epoch [38/50]  Train Loss: 1.1684  Acc: 0.7712  |  Val Loss: 1.5114  Acc: 0.6468  (patience 5/12)
+  Epoch [39/50]  Train Loss: 1.1703  Acc: 0.7745  |  Val Loss: 1.5129  Acc: 0.6440  (patience 6/12)
+  Epoch [40/50]  Train Loss: 1.1622  Acc: 0.7786  |  Val Loss: 1.5081  Acc: 0.6431  (patience 7/12)
+  Epoch [41/50]  Train Loss: 1.1563  Acc: 0.7756  |  Val Loss: 1.5065  Acc: 0.6421  (patience 8/12)
+  Epoch [42/50]  Train Loss: 1.1574  Acc: 0.7771  |  Val Loss: 1.5114  Acc: 0.6468  (patience 9/12)
+  Epoch [43/50]  Train Loss: 1.1512  Acc: 0.7808  |  Val Loss: 1.5133  Acc: 0.6442  (patience 10/12)
+  Epoch [44/50]  Train Loss: 1.1506  Acc: 0.7841  |  Val Loss: 1.5165  Acc: 0.6447  (patience 11/12)
+  Epoch [45/50]  Train Loss: 1.1506  Acc: 0.7842  |  Val Loss: 1.5144  Acc: 0.6477  (patience 12/12)
+  ⚠  Early stopping triggered at epoch 45
+  Training complete in 24.9 min  |  Best Val Acc: 0.6491
+
+======================================================================
+  Training: MiniXception
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=50 params @ lr=3.00e-05  |  head=2 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 2.3494  Acc: 0.1277  |  Val Loss: 2.1291  Acc: 0.0785  ✓ saved (best=0.0785)
+  Epoch [02/50]  Train Loss: 2.2222  Acc: 0.1253  |  Val Loss: 2.1190  Acc: 0.1205  ✓ saved (best=0.1205)
+  Epoch [03/50]  Train Loss: 2.1665  Acc: 0.1282  |  Val Loss: 2.0990  Acc: 0.1215  ✓ saved (best=0.1215)
+  Epoch [04/50]  Train Loss: 2.1294  Acc: 0.1391  |  Val Loss: 2.1045  Acc: 0.2271  ✓ saved (best=0.2271)
+  Epoch [05/50]  Train Loss: 2.0971  Acc: 0.1538  |  Val Loss: 2.0481  Acc: 0.1732  (patience 1/12)
+  Epoch [06/50]  Train Loss: 2.0582  Acc: 0.1869  |  Val Loss: 2.0255  Acc: 0.2671  ✓ saved (best=0.2671)
+  Epoch [07/50]  Train Loss: 2.0310  Acc: 0.2033  |  Val Loss: 2.0278  Acc: 0.2248  (patience 1/12)
+  Epoch [08/50]  Train Loss: 2.0015  Acc: 0.2308  |  Val Loss: 2.0000  Acc: 0.3179  ✓ saved (best=0.3179)
+  Epoch [09/50]  Train Loss: 1.9767  Acc: 0.2445  |  Val Loss: 1.9557  Acc: 0.3927  ✓ saved (best=0.3927)
+  Epoch [10/50]  Train Loss: 1.9667  Acc: 0.2638  |  Val Loss: 1.9716  Acc: 0.2659  (patience 1/12)
+  Epoch [11/50]  Train Loss: 1.9446  Acc: 0.2763  |  Val Loss: 1.9436  Acc: 0.3507  (patience 2/12)
+  Epoch [12/50]  Train Loss: 1.9289  Acc: 0.2962  |  Val Loss: 1.8925  Acc: 0.2933  (patience 3/12)
+  Epoch [13/50]  Train Loss: 1.8992  Acc: 0.3180  |  Val Loss: 1.8742  Acc: 0.3964  ✓ saved (best=0.3964)
+  Epoch [14/50]  Train Loss: 1.8831  Acc: 0.3294  |  Val Loss: 1.8902  Acc: 0.4201  ✓ saved (best=0.4201)
+  Epoch [15/50]  Train Loss: 1.8704  Acc: 0.3369  |  Val Loss: 1.8519  Acc: 0.4190  (patience 1/12)
+  Epoch [16/50]  Train Loss: 1.8553  Acc: 0.3515  |  Val Loss: 1.8465  Acc: 0.3967  (patience 2/12)
+  Epoch [17/50]  Train Loss: 1.8404  Acc: 0.3614  |  Val Loss: 1.8418  Acc: 0.4285  ✓ saved (best=0.4285)
+  Epoch [18/50]  Train Loss: 1.8296  Acc: 0.3771  |  Val Loss: 1.8194  Acc: 0.4148  (patience 1/12)
+  Epoch [19/50]  Train Loss: 1.8238  Acc: 0.3738  |  Val Loss: 1.8151  Acc: 0.4450  ✓ saved (best=0.4450)
+  Epoch [20/50]  Train Loss: 1.8053  Acc: 0.3818  |  Val Loss: 1.8029  Acc: 0.4373  (patience 1/12)
+  Epoch [21/50]  Train Loss: 1.8016  Acc: 0.3938  |  Val Loss: 1.7936  Acc: 0.4433  (patience 2/12)
+  Epoch [22/50]  Train Loss: 1.7912  Acc: 0.3958  |  Val Loss: 1.7758  Acc: 0.4621  ✓ saved (best=0.4621)
+  Epoch [23/50]  Train Loss: 1.7895  Acc: 0.4023  |  Val Loss: 1.7894  Acc: 0.4642  ✓ saved (best=0.4642)
+  Epoch [24/50]  Train Loss: 1.7789  Acc: 0.4063  |  Val Loss: 1.7542  Acc: 0.4408  (patience 1/12)
+  Epoch [25/50]  Train Loss: 1.7701  Acc: 0.4086  |  Val Loss: 1.7747  Acc: 0.4675  ✓ saved (best=0.4675)
+  Epoch [26/50]  Train Loss: 1.7618  Acc: 0.4180  |  Val Loss: 1.7468  Acc: 0.4568  (patience 1/12)
+  Epoch [27/50]  Train Loss: 1.7541  Acc: 0.4236  |  Val Loss: 1.7653  Acc: 0.4789  ✓ saved (best=0.4789)
+  Epoch [28/50]  Train Loss: 1.7470  Acc: 0.4315  |  Val Loss: 1.7595  Acc: 0.4649  (patience 1/12)
+  Epoch [29/50]  Train Loss: 1.7445  Acc: 0.4320  |  Val Loss: 1.7472  Acc: 0.4740  (patience 2/12)
+  Epoch [30/50]  Train Loss: 1.7361  Acc: 0.4372  |  Val Loss: 1.7506  Acc: 0.4923  ✓ saved (best=0.4923)
+  Epoch [31/50]  Train Loss: 1.7308  Acc: 0.4354  |  Val Loss: 1.7415  Acc: 0.4673  (patience 1/12)
+  Epoch [32/50]  Train Loss: 1.7292  Acc: 0.4408  |  Val Loss: 1.7290  Acc: 0.4858  (patience 2/12)
+  Epoch [33/50]  Train Loss: 1.7276  Acc: 0.4438  |  Val Loss: 1.7470  Acc: 0.4849  (patience 3/12)
+  Epoch [34/50]  Train Loss: 1.7194  Acc: 0.4456  |  Val Loss: 1.7352  Acc: 0.4886  (patience 4/12)
+  Epoch [35/50]  Train Loss: 1.7178  Acc: 0.4451  |  Val Loss: 1.7268  Acc: 0.4884  (patience 5/12)
+  Epoch [36/50]  Train Loss: 1.7127  Acc: 0.4511  |  Val Loss: 1.7418  Acc: 0.4949  ✓ saved (best=0.4949)
+  Epoch [37/50]  Train Loss: 1.7124  Acc: 0.4530  |  Val Loss: 1.7244  Acc: 0.4840  (patience 1/12)
+  Epoch [38/50]  Train Loss: 1.7107  Acc: 0.4522  |  Val Loss: 1.7254  Acc: 0.4991  ✓ saved (best=0.4991)
+  Epoch [39/50]  Train Loss: 1.7043  Acc: 0.4554  |  Val Loss: 1.7292  Acc: 0.4919  (patience 1/12)
+  Epoch [40/50]  Train Loss: 1.7022  Acc: 0.4538  |  Val Loss: 1.7331  Acc: 0.5109  ✓ saved (best=0.5109)
+  Epoch [41/50]  Train Loss: 1.7033  Acc: 0.4589  |  Val Loss: 1.7254  Acc: 0.5030  (patience 1/12)
+  Epoch [42/50]  Train Loss: 1.6973  Acc: 0.4587  |  Val Loss: 1.7191  Acc: 0.4998  (patience 2/12)
+  Epoch [43/50]  Train Loss: 1.7006  Acc: 0.4605  |  Val Loss: 1.7233  Acc: 0.5005  (patience 3/12)
+  Epoch [44/50]  Train Loss: 1.7033  Acc: 0.4589  |  Val Loss: 1.7152  Acc: 0.4875  (patience 4/12)
+  Epoch [45/50]  Train Loss: 1.7001  Acc: 0.4561  |  Val Loss: 1.7190  Acc: 0.4963  (patience 5/12)
+  Epoch [46/50]  Train Loss: 1.6944  Acc: 0.4591  |  Val Loss: 1.7196  Acc: 0.5009  (patience 6/12)
+  Epoch [47/50]  Train Loss: 1.6934  Acc: 0.4679  |  Val Loss: 1.7183  Acc: 0.4951  (patience 7/12)
+  Epoch [48/50]  Train Loss: 1.6936  Acc: 0.4643  |  Val Loss: 1.7170  Acc: 0.4956  (patience 8/12)
+  Epoch [49/50]  Train Loss: 1.6949  Acc: 0.4595  |  Val Loss: 1.7186  Acc: 0.4963  (patience 9/12)
+  Epoch [50/50]  Train Loss: 1.6902  Acc: 0.4656  |  Val Loss: 1.7177  Acc: 0.4984  (patience 10/12)
+  Training complete in 8.2 min  |  Best Val Acc: 0.5109
+
+======================================================================
+  Training: ViTTiny
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=34 params @ lr=3.00e-05  |  head=22 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 1.9027  Acc: 0.3163  |  Val Loss: 1.8259  Acc: 0.4484  ✓ saved (best=0.4484)
+  Epoch [02/50]  Train Loss: 1.7725  Acc: 0.4207  |  Val Loss: 1.7275  Acc: 0.4800  ✓ saved (best=0.4800)
+  Epoch [03/50]  Train Loss: 1.7121  Acc: 0.4642  |  Val Loss: 1.7213  Acc: 0.4935  ✓ saved (best=0.4935)
+  Epoch [04/50]  Train Loss: 1.6748  Acc: 0.4924  |  Val Loss: 1.6794  Acc: 0.5186  ✓ saved (best=0.5186)
+  Epoch [05/50]  Train Loss: 1.6380  Acc: 0.5153  |  Val Loss: 1.6555  Acc: 0.5174  (patience 1/12)
+  Epoch [06/50]  Train Loss: 1.6101  Acc: 0.5319  |  Val Loss: 1.6334  Acc: 0.5576  ✓ saved (best=0.5576)
+  Epoch [07/50]  Train Loss: 1.5857  Acc: 0.5461  |  Val Loss: 1.6087  Acc: 0.5502  (patience 1/12)
+  Epoch [08/50]  Train Loss: 1.5584  Acc: 0.5637  |  Val Loss: 1.6200  Acc: 0.5483  (patience 2/12)
+  Epoch [09/50]  Train Loss: 1.5370  Acc: 0.5766  |  Val Loss: 1.6205  Acc: 0.5762  ✓ saved (best=0.5762)
+  Epoch [10/50]  Train Loss: 1.5128  Acc: 0.5896  |  Val Loss: 1.6092  Acc: 0.5699  (patience 1/12)
+  Epoch [11/50]  Train Loss: 1.4974  Acc: 0.5974  |  Val Loss: 1.6122  Acc: 0.5629  (patience 2/12)
+  Epoch [12/50]  Train Loss: 1.4859  Acc: 0.6069  |  Val Loss: 1.6005  Acc: 0.5643  (patience 3/12)
+  Epoch [13/50]  Train Loss: 1.4685  Acc: 0.6123  |  Val Loss: 1.6129  Acc: 0.5780  ✓ saved (best=0.5780)
+  Epoch [14/50]  Train Loss: 1.4465  Acc: 0.6238  |  Val Loss: 1.6028  Acc: 0.5948  ✓ saved (best=0.5948)
+  Epoch [15/50]  Train Loss: 1.4319  Acc: 0.6289  |  Val Loss: 1.5857  Acc: 0.5929  (patience 1/12)
+  Epoch [16/50]  Train Loss: 1.4179  Acc: 0.6418  |  Val Loss: 1.5922  Acc: 0.5885  (patience 2/12)
+  Epoch [17/50]  Train Loss: 1.3960  Acc: 0.6552  |  Val Loss: 1.5705  Acc: 0.5989  ✓ saved (best=0.5989)
+  Epoch [18/50]  Train Loss: 1.3827  Acc: 0.6581  |  Val Loss: 1.5876  Acc: 0.5954  (patience 1/12)
+  Epoch [19/50]  Train Loss: 1.3677  Acc: 0.6669  |  Val Loss: 1.5722  Acc: 0.5822  (patience 2/12)
+  Epoch [20/50]  Train Loss: 1.3508  Acc: 0.6740  |  Val Loss: 1.5775  Acc: 0.5908  (patience 3/12)
+  Epoch [21/50]  Train Loss: 1.3386  Acc: 0.6807  |  Val Loss: 1.5863  Acc: 0.5922  (patience 4/12)
+  Epoch [22/50]  Train Loss: 1.3261  Acc: 0.6864  |  Val Loss: 1.5717  Acc: 0.6054  ✓ saved (best=0.6054)
+  Epoch [23/50]  Train Loss: 1.3096  Acc: 0.6992  |  Val Loss: 1.5866  Acc: 0.5959  (patience 1/12)
+  Epoch [24/50]  Train Loss: 1.2907  Acc: 0.7075  |  Val Loss: 1.5725  Acc: 0.6038  (patience 2/12)
+  Epoch [25/50]  Train Loss: 1.2808  Acc: 0.7070  |  Val Loss: 1.5817  Acc: 0.5966  (patience 3/12)
+  Epoch [26/50]  Train Loss: 1.2661  Acc: 0.7180  |  Val Loss: 1.6070  Acc: 0.6015  (patience 4/12)
+  Epoch [27/50]  Train Loss: 1.2592  Acc: 0.7259  |  Val Loss: 1.5977  Acc: 0.5929  (patience 5/12)
+  Epoch [28/50]  Train Loss: 1.2393  Acc: 0.7329  |  Val Loss: 1.5969  Acc: 0.6038  (patience 6/12)
+  Epoch [29/50]  Train Loss: 1.2303  Acc: 0.7419  |  Val Loss: 1.6036  Acc: 0.6080  ✓ saved (best=0.6080)
+  Epoch [30/50]  Train Loss: 1.2194  Acc: 0.7441  |  Val Loss: 1.5880  Acc: 0.6061  (patience 1/12)
+  Epoch [31/50]  Train Loss: 1.2052  Acc: 0.7551  |  Val Loss: 1.6001  Acc: 0.6020  (patience 2/12)
+  Epoch [32/50]  Train Loss: 1.1973  Acc: 0.7583  |  Val Loss: 1.6064  Acc: 0.6064  (patience 3/12)
+  Epoch [33/50]  Train Loss: 1.1899  Acc: 0.7647  |  Val Loss: 1.5973  Acc: 0.6066  (patience 4/12)
+  Epoch [34/50]  Train Loss: 1.1786  Acc: 0.7711  |  Val Loss: 1.5934  Acc: 0.6094  ✓ saved (best=0.6094)
+  Epoch [35/50]  Train Loss: 1.1743  Acc: 0.7717  |  Val Loss: 1.5821  Acc: 0.6057  (patience 1/12)
+  Epoch [36/50]  Train Loss: 1.1644  Acc: 0.7759  |  Val Loss: 1.6013  Acc: 0.6094  (patience 2/12)
+  Epoch [37/50]  Train Loss: 1.1515  Acc: 0.7868  |  Val Loss: 1.5939  Acc: 0.6117  ✓ saved (best=0.6117)
+  Epoch [38/50]  Train Loss: 1.1465  Acc: 0.7859  |  Val Loss: 1.5920  Acc: 0.6115  (patience 1/12)
+  Epoch [39/50]  Train Loss: 1.1497  Acc: 0.7867  |  Val Loss: 1.5962  Acc: 0.6085  (patience 2/12)
+  Epoch [40/50]  Train Loss: 1.1403  Acc: 0.7907  |  Val Loss: 1.6012  Acc: 0.6085  (patience 3/12)
+  Epoch [41/50]  Train Loss: 1.1364  Acc: 0.7922  |  Val Loss: 1.5988  Acc: 0.6078  (patience 4/12)
+  Epoch [42/50]  Train Loss: 1.1235  Acc: 0.8029  |  Val Loss: 1.6004  Acc: 0.6082  (patience 5/12)
+  Epoch [43/50]  Train Loss: 1.1217  Acc: 0.7999  |  Val Loss: 1.6020  Acc: 0.6103  (patience 6/12)
+  Epoch [44/50]  Train Loss: 1.1209  Acc: 0.8019  |  Val Loss: 1.6000  Acc: 0.6075  (patience 7/12)
+  Epoch [45/50]  Train Loss: 1.1113  Acc: 0.8076  |  Val Loss: 1.5994  Acc: 0.6110  (patience 8/12)
+  Epoch [46/50]  Train Loss: 1.1114  Acc: 0.8050  |  Val Loss: 1.6006  Acc: 0.6094  (patience 9/12)
+  Epoch [47/50]  Train Loss: 1.1147  Acc: 0.8069  |  Val Loss: 1.6004  Acc: 0.6085  (patience 10/12)
+  Epoch [48/50]  Train Loss: 1.1166  Acc: 0.8040  |  Val Loss: 1.6002  Acc: 0.6087  (patience 11/12)
+  Epoch [49/50]  Train Loss: 1.1111  Acc: 0.8105  |  Val Loss: 1.6001  Acc: 0.6096  (patience 12/12)
+  ⚠  Early stopping triggered at epoch 49
+  Training complete in 25.7 min  |  Best Val Acc: 0.6117
+
+======================================================================
+  Training: ResNet50
+  Device: cuda | Epochs: 50 | Base LR: 0.0003
+======================================================================
+  Loss: CrossEntropyLoss  (label_smoothing=0.1, weights on cuda)
+  [LR groups] backbone=87 params @ lr=3.00e-05  |  head=10 params @ lr=3.00e-04
+  Epoch [01/50]  Train Loss: 2.0182  Acc: 0.2326  |  Val Loss: 1.9291  Acc: 0.3769  ✓ saved (best=0.3769)
+  Epoch [02/50]  Train Loss: 1.8345  Acc: 0.3707  |  Val Loss: 1.7784  Acc: 0.4573  ✓ saved (best=0.4573)
+  Epoch [03/50]  Train Loss: 1.7273  Acc: 0.4495  |  Val Loss: 1.6837  Acc: 0.4912  ✓ saved (best=0.4912)
+  Epoch [04/50]  Train Loss: 1.6452  Acc: 0.5008  |  Val Loss: 1.6269  Acc: 0.5474  ✓ saved (best=0.5474)
+  Epoch [05/50]  Train Loss: 1.5796  Acc: 0.5458  |  Val Loss: 1.5754  Acc: 0.5706  ✓ saved (best=0.5706)
+  Epoch [06/50]  Train Loss: 1.5297  Acc: 0.5762  |  Val Loss: 1.5490  Acc: 0.5894  ✓ saved (best=0.5894)
+  Epoch [07/50]  Train Loss: 1.4885  Acc: 0.5957  |  Val Loss: 1.5371  Acc: 0.6052  ✓ saved (best=0.6052)
+  Epoch [08/50]  Train Loss: 1.4428  Acc: 0.6198  |  Val Loss: 1.5152  Acc: 0.6013  (patience 1/12)
+  Epoch [09/50]  Train Loss: 1.4124  Acc: 0.6389  |  Val Loss: 1.5295  Acc: 0.6140  ✓ saved (best=0.6140)
+  Epoch [10/50]  Train Loss: 1.3834  Acc: 0.6587  |  Val Loss: 1.5137  Acc: 0.6259  ✓ saved (best=0.6259)
+  Epoch [11/50]  Train Loss: 1.3478  Acc: 0.6769  |  Val Loss: 1.5224  Acc: 0.6305  ✓ saved (best=0.6305)
+  Epoch [12/50]  Train Loss: 1.3253  Acc: 0.6918  |  Val Loss: 1.5089  Acc: 0.6403  ✓ saved (best=0.6403)
+  Epoch [13/50]  Train Loss: 1.2882  Acc: 0.7093  |  Val Loss: 1.5172  Acc: 0.6382  (patience 1/12)
+  Epoch [14/50]  Train Loss: 1.2669  Acc: 0.7216  |  Val Loss: 1.5073  Acc: 0.6386  (patience 2/12)
+  Epoch [15/50]  Train Loss: 1.2422  Acc: 0.7361  |  Val Loss: 1.5222  Acc: 0.6342  (patience 3/12)
+  Epoch [16/50]  Train Loss: 1.2180  Acc: 0.7493  |  Val Loss: 1.5194  Acc: 0.6440  ✓ saved (best=0.6440)
+  Epoch [17/50]  Train Loss: 1.1918  Acc: 0.7663  |  Val Loss: 1.5222  Acc: 0.6482  ✓ saved (best=0.6482)
+  Epoch [18/50]  Train Loss: 1.1647  Acc: 0.7819  |  Val Loss: 1.5244  Acc: 0.6419  (patience 1/12)
+  Epoch [19/50]  Train Loss: 1.1451  Acc: 0.7926  |  Val Loss: 1.5395  Acc: 0.6451  (patience 2/12)
+  Epoch [20/50]  Train Loss: 1.1246  Acc: 0.8035  |  Val Loss: 1.5375  Acc: 0.6465  (patience 3/12)
+  Epoch [21/50]  Train Loss: 1.1052  Acc: 0.8133  |  Val Loss: 1.5511  Acc: 0.6461  (patience 4/12)
+  Epoch [22/50]  Train Loss: 1.0809  Acc: 0.8235  |  Val Loss: 1.5584  Acc: 0.6554  ✓ saved (best=0.6554)
+  Epoch [23/50]  Train Loss: 1.0599  Acc: 0.8367  |  Val Loss: 1.5731  Acc: 0.6491  (patience 1/12)
+  Epoch [24/50]  Train Loss: 1.0489  Acc: 0.8436  |  Val Loss: 1.5683  Acc: 0.6526  (patience 2/12)
+  Epoch [25/50]  Train Loss: 1.0311  Acc: 0.8546  |  Val Loss: 1.5739  Acc: 0.6556  ✓ saved (best=0.6556)
+  Epoch [26/50]  Train Loss: 1.0207  Acc: 0.8603  |  Val Loss: 1.5744  Acc: 0.6579  ✓ saved (best=0.6579)
+  Epoch [27/50]  Train Loss: 1.0005  Acc: 0.8717  |  Val Loss: 1.5865  Acc: 0.6593  ✓ saved (best=0.6593)
+  Epoch [28/50]  Train Loss: 0.9930  Acc: 0.8789  |  Val Loss: 1.5801  Acc: 0.6584  (patience 1/12)
+  Epoch [29/50]  Train Loss: 0.9807  Acc: 0.8853  |  Val Loss: 1.6024  Acc: 0.6556  (patience 2/12)
+  Epoch [30/50]  Train Loss: 0.9637  Acc: 0.8913  |  Val Loss: 1.5960  Acc: 0.6588  (patience 3/12)
+  Epoch [31/50]  Train Loss: 0.9570  Acc: 0.8972  |  Val Loss: 1.5927  Acc: 0.6623  ✓ saved (best=0.6623)
+  Epoch [32/50]  Train Loss: 0.9510  Acc: 0.8990  |  Val Loss: 1.5993  Acc: 0.6619  (patience 1/12)
+  Epoch [33/50]  Train Loss: 0.9355  Acc: 0.9065  |  Val Loss: 1.6120  Acc: 0.6640  ✓ saved (best=0.6640)
+  Epoch [34/50]  Train Loss: 0.9338  Acc: 0.9100  |  Val Loss: 1.6134  Acc: 0.6598  (patience 1/12)
+  Epoch [35/50]  Train Loss: 0.9286  Acc: 0.9124  |  Val Loss: 1.6173  Acc: 0.6616  (patience 2/12)
+  Epoch [36/50]  Train Loss: 0.9225  Acc: 0.9165  |  Val Loss: 1.6111  Acc: 0.6651  ✓ saved (best=0.6651)
+  Epoch [37/50]  Train Loss: 0.9106  Acc: 0.9233  |  Val Loss: 1.6232  Acc: 0.6544  (patience 1/12)
+  Epoch [38/50]  Train Loss: 0.9082  Acc: 0.9234  |  Val Loss: 1.6138  Acc: 0.6621  (patience 2/12)
+  Epoch [39/50]  Train Loss: 0.9065  Acc: 0.9260  |  Val Loss: 1.6117  Acc: 0.6633  (patience 3/12)
+  Epoch [40/50]  Train Loss: 0.9025  Acc: 0.9273  |  Val Loss: 1.6156  Acc: 0.6591  (patience 4/12)
+  Epoch [41/50]  Train Loss: 0.8957  Acc: 0.9295  |  Val Loss: 1.6210  Acc: 0.6582  (patience 5/12)
+  Epoch [42/50]  Train Loss: 0.8919  Acc: 0.9319  |  Val Loss: 1.6249  Acc: 0.6565  (patience 6/12)
+  Epoch [43/50]  Train Loss: 0.8925  Acc: 0.9318  |  Val Loss: 1.6249  Acc: 0.6640  (patience 7/12)
+  Epoch [44/50]  Train Loss: 0.8891  Acc: 0.9372  |  Val Loss: 1.6182  Acc: 0.6612  (patience 8/12)
+  Epoch [45/50]  Train Loss: 0.8869  Acc: 0.9355  |  Val Loss: 1.6228  Acc: 0.6614  (patience 9/12)
+  Epoch [46/50]  Train Loss: 0.8869  Acc: 0.9373  |  Val Loss: 1.6198  Acc: 0.6577  (patience 10/12)
+  Epoch [47/50]  Train Loss: 0.8841  Acc: 0.9394  |  Val Loss: 1.6161  Acc: 0.6607  (patience 11/12)
+  Epoch [48/50]  Train Loss: 0.8839  Acc: 0.9375  |  Val Loss: 1.6250  Acc: 0.6570  (patience 12/12)
+  ⚠  Early stopping triggered at epoch 48
+  Training complete in 32.6 min  |  Best Val Acc: 0.6651
+
+======================================================================
+  TRAINING SUMMARY
+======================================================================
+  Model                  Val/Test Acc   Time (min)
+  ────────────────────────────────────────────────
+  ANN                          0.2970          4.5
+  CustomCNN                    0.4396          6.2
+  MobileNetV3                  0.6363         24.7
+  EfficientNetB2               0.6491         24.9
+  MiniXception                 0.5109          8.2
+  ViTTiny                      0.6117         25.7
+  ResNet50                     0.6651         32.6
+  ────────────────────────────────────────────────
+  Results saved → /mnt/home2/home/harsh_b/fer2013_dataset/results/training_results.json

@@ -1,42 +1,37 @@
 {
-  "SVM": {
-    "test_acc": 0.47534132070214546,
-    "train_time_min": 2.5688157002131145,
-    "type": "ml"
-  },
-  "KNN": {
-    "test_acc": 0.4076344385622736,
-    "train_time_min": 0.0001598517100016276,
-    "type": "ml"
-  },
   "ANN": {
-    "best_val_acc": 0.31839294008360425,
-    "train_time_min": 7.862789162000021,
+    "best_val_acc": 0.29702740362285185,
+    "train_time_min": 4.490253786245982,
     "type": "dl_mlp"
   },
   "CustomCNN": {
-    "best_val_acc": 0.4454249883882954,
-    "train_time_min": 7.941314176718394,
+    "best_val_acc": 0.4396191360891779,
+    "train_time_min": 6.1516310175259905,
     "type": "dl_small"
   },
   "MobileNetV3": {
-    "best_val_acc": 0.6314444960520205,
-    "train_time_min": 29.09160842100779,
+    "best_val_acc": 0.6363214119832792,
+    "train_time_min": 24.746155699094135,
     "type": "dl_large"
   },
-  "EfficientNetB0": {
-    "best_val_acc": 0.6467719461216906,
-    "train_time_min": 29.172774974505106,
+  "EfficientNetB2": {
+    "best_val_acc": 0.6490942870413376,
+    "train_time_min": 24.890194030602775,
     "type": "dl_large"
   },
   "MiniXception": {
-    "best_val_acc": 0.4958197863446354,
-    "train_time_min": 13.57860639890035,
+    "best_val_acc": 0.5109150023223409,
+    "train_time_min": 8.208026560147603,
     "type": "dl_small"
   },
   "ViTTiny": {
-    "best_val_acc": 0.6114723641430562,
-    "train_time_min": 31.224783718585968,
+    "best_val_acc": 0.6117045982350209,
+    "train_time_min": 25.707714732487997,
+    "type": "dl_large"
+  },
+  "ResNet50": {
+    "best_val_acc": 0.665118439386902,
+    "train_time_min": 32.58515374660492,
     "type": "dl_large"
   }
 }
