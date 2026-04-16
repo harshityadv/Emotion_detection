@@ -18,7 +18,7 @@ from config import (
     NUM_CLASSES, EMOTIONS, IMG_SIZE_SMALL, IMG_SIZE_LARGE, DL_BATCH_SIZE,
 )
 from data_loader import get_val_transforms, extract_features_for_ml
-from models import build_model
+from models import build_model, CBAM
 from torchvision import datasets
 from torch.utils.data import DataLoader
 

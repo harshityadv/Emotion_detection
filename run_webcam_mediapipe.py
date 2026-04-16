@@ -100,14 +100,16 @@ def get_gradcam_layer(model, model_name):
     Return the target conv layer for Grad-CAM, or None if not supported.
     Only CNN-based models support Grad-CAM (not ViT, ANN, SVM, KNN).
     """
-    if model_name == 'EfficientNetB0':
+    if model_name == 'EfficientNetB2':
         return model.model.features[-1]
     elif model_name == 'MobileNetV3':
         return model.model.features[-1]
-    elif model_name == 'CustomCNN':
-        return model.features[-3]       # last Conv2d before AdaptiveAvgPool
+    elif model_name == 'CustomCNN_MMEF':
+        return model.fusion_bottleneck[-1]
     elif model_name == 'MiniXception':
-        return model.blocks[-1].sep_block[-2]  # last BN before pool
+        return model.blocks[-1].sep_block[-2]
+    elif model_name == 'ResNet50':
+        return model.model.layer4[-1]
     else:
         return None  # ANN, ViT, SVM, KNN — not applicable
 
@@ -226,7 +228,7 @@ def main():
     GRADCAM_ALPHA   = 0.40  # Heatmap blend strength
 
     # ── Model selection ───────────────────────────────────────────────────
-    model_name = sys.argv[1] if len(sys.argv) > 1 else 'EfficientNetB0'
+    model_name = sys.argv[1] if len(sys.argv) > 1 else 'EfficientNetB2'
     from config import MODEL_REGISTRY
     if model_name not in MODEL_REGISTRY:
         print(f"Unknown model: {model_name}")

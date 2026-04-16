@@ -80,6 +80,139 @@ class ANN(nn.Module):
 # 3. CustomCNN+CBAM+MMEF
 # ═══════════════════════════════════════════════════════════════════════════
 
+class ChannelAttention(nn.Module):
+    """
+    Channel Attention Module (CAM).
+
+    Mechanism
+    ---------
+    Given a feature map F ∈ R^(C×H×W):
+      1. Apply both GlobalAvgPool and GlobalMaxPool over H,W → two (C×1×1) vectors.
+      2. Feed each through a shared 2-layer MLP with bottleneck ratio `r`
+         (reduces C → C//r → C, capturing inter-channel relationships).
+      3. Sum the MLP outputs and apply Sigmoid → channel attention map Mc ∈ [0,1]^C.
+      4. Multiply: F' = Mc ⊗ F  (broadcast over H, W).
+
+    Parameters
+    ----------
+    in_channels : number of input feature channels (C).
+    reduction   : bottleneck ratio (default 16 → C//16 hidden units).
+    """
+    def __init__(self, in_channels: int, reduction: int = 16):
+        super().__init__()
+        # Clamp hidden dim so very small channel counts don't produce 0
+        hidden = max(in_channels // reduction, 4)
+
+        # Shared MLP — applied to both avg-pooled and max-pooled descriptors
+        self.shared_mlp = nn.Sequential(
+            nn.Linear(in_channels, hidden, bias=False),
+            nn.ReLU(inplace=True),
+            nn.Linear(hidden, in_channels, bias=False),
+        )
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        B, C, _, _ = x.shape
+
+        # Global Average Pooling: (B, C, H, W) → (B, C)
+        avg = x.flatten(2).mean(dim=2)           # spatial avg
+        # Global Max Pooling:     (B, C, H, W) → (B, C)
+        mx  = x.flatten(2).max(dim=2).values     # spatial max
+
+        # Shared MLP on each descriptor
+        avg_out = self.shared_mlp(avg)            # (B, C)
+        max_out = self.shared_mlp(mx)             # (B, C)
+
+        # Combine, gate with Sigmoid, reshape for broadcast
+        scale = torch.sigmoid(avg_out + max_out)  # (B, C)
+        scale = scale.view(B, C, 1, 1)            # (B, C, 1, 1)
+        return x * scale                          # channel-scaled feature map
+
+
+class SpatialAttention(nn.Module):
+    """
+    Spatial Attention Module (SAM).
+
+    Mechanism
+    ---------
+    Given a channel-attended feature map F' ∈ R^(C×H×W):
+      1. Compute channel-wise AvgPool and MaxPool → two (1×H×W) maps.
+      2. Concatenate along channel dim → (2×H×W).
+      3. Apply a single 7×7 conv → (1×H×W).
+      4. Sigmoid → spatial attention map Ms ∈ [0,1]^(H×W).
+      5. Multiply: F'' = Ms ⊗ F'  (broadcast over C).
+
+    Parameters
+    ----------
+    kernel_size : size of the spatial conv kernel (7 recommended in paper).
+    """
+    def __init__(self, kernel_size: int = 7):
+        super().__init__()
+        padding = kernel_size // 2
+        # 2-channel input (avg-pool + max-pool descriptor maps), 1 output channel
+        self.conv = nn.Conv2d(2, 1, kernel_size, padding=padding, bias=False)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        # Channel-wise Average and Max pooling → (B, 1, H, W) each
+        avg = x.mean(dim=1, keepdim=True)           # (B, 1, H, W)
+        mx  = x.max(dim=1, keepdim=True).values     # (B, 1, H, W)
+
+        # Concatenate along channel axis → (B, 2, H, W)
+        cat = torch.cat([avg, mx], dim=1)
+
+        # Spatial gate
+        scale = torch.sigmoid(self.conv(cat))        # (B, 1, H, W)
+        return x * scale                             # spatially-scaled feature map
+
+
+class CBAM(nn.Module):
+    """
+    Full Convolutional Block Attention Module.
+
+    Sequentially applies ChannelAttention then SpatialAttention to the
+    input feature map.  The output shape is IDENTICAL to the input shape,
+    making CBAM a drop-in module after any conv block.
+
+    Parameter count per CBAM instance:
+      - CAM: 2 × (C × (C//r))  ≈ 2 × 256 × 16 = 8 192  (for C=256, r=16)
+      - SAM: 2 × 7 × 7 × 1    = 98
+    Total overhead is negligible compared to the conv layers themselves.
+
+    Parameters
+    ----------
+    in_channels : number of feature channels (C).
+    reduction   : channel reduction ratio for CAM (default 16).
+    kernel_size : spatial conv kernel size for SAM (default 7).
+    """
+    def __init__(self, in_channels: int, reduction: int = 16, kernel_size: int = 7):
+        super().__init__()
+        self.channel_attention = ChannelAttention(in_channels, reduction)
+        self.spatial_attention = SpatialAttention(kernel_size)
+
+    def forward(self, x: torch.Tensor) -> torch.Tensor:
+        x = self.channel_attention(x)   # WHAT to attend to
+        x = self.spatial_attention(x)   # WHERE to attend
+        return x
+
+
+# ═══════════════════════════════════════════════════════════════════════════
+# FocalLoss — Addresses severe class imbalance in FER2013
+# Paper: "Focal Loss for Dense Object Detection" (Lin et al., ICCV 2017)
+#
+# Standard Cross-Entropy treats all samples equally.  On imbalanced datasets
+# the model is overwhelmed by easy majority-class examples, driving the loss
+# without learning minority-class discriminative features.
+#
+# Focal Loss re-weights per-sample cross-entropy by a modulating factor:
+#   FL(p_t) = -α_t · (1 - p_t)^γ · log(p_t)
+#
+# where:
+#   p_t → model's estimated probability for the TRUE class
+#   (1 - p_t)^γ → down-weights EASY samples (high p_t ≈ 1 → factor ≈ 0)
+#               → keeps weight HIGH for HARD/rare samples (low p_t)
+#   α_t → optional per-class weight (passed as `weight` tensor)
+#   γ   → focusing parameter (γ=0 reduces to standard CE; γ=2 is typical)
+# ═══════════════════════════════════════════════════════════════════════════
+
 
 class CustomCNNMMEF(nn.Module):
     """
