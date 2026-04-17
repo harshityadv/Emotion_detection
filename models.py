@@ -194,25 +194,6 @@ class CBAM(nn.Module):
         return x
 
 
-# ═══════════════════════════════════════════════════════════════════════════
-# FocalLoss — Addresses severe class imbalance in FER2013
-# Paper: "Focal Loss for Dense Object Detection" (Lin et al., ICCV 2017)
-#
-# Standard Cross-Entropy treats all samples equally.  On imbalanced datasets
-# the model is overwhelmed by easy majority-class examples, driving the loss
-# without learning minority-class discriminative features.
-#
-# Focal Loss re-weights per-sample cross-entropy by a modulating factor:
-#   FL(p_t) = -α_t · (1 - p_t)^γ · log(p_t)
-#
-# where:
-#   p_t → model's estimated probability for the TRUE class
-#   (1 - p_t)^γ → down-weights EASY samples (high p_t ≈ 1 → factor ≈ 0)
-#               → keeps weight HIGH for HARD/rare samples (low p_t)
-#   α_t → optional per-class weight (passed as `weight` tensor)
-#   γ   → focusing parameter (γ=0 reduces to standard CE; γ=2 is typical)
-# ═══════════════════════════════════════════════════════════════════════════
-
 
 class CustomCNNMMEF(nn.Module):
     """
@@ -474,7 +455,7 @@ class EmotionEfficientNetB2(nn.Module):
 
 
 # ═══════════════════════════════════════════════════════════════════════════
-# 7. ResNet-50 — NEW MODEL
+# 7. ResNet-50 
 #    Architecture: 50-layer ResNet using bottleneck blocks (1×1 → 3×3 → 1×1).
 #    ~25.6M parameters. Stronger feature extractor than ResNet-18 (11M params).
 #    Strategy: freeze early layers (conv1, layer1, layer2), fine-tune layer3+
