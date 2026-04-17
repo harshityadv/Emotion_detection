@@ -352,7 +352,7 @@ Emotion_detection/
 
 ## Advanced Training Techniques
 
-### Focal Loss with Label Smoothing & Class Weights
+### CrossEntropy Loss with Label Smoothing & Class Weights
 
 FER2013 is significantly imbalanced (*Happy* has ~8,000 samples vs *Disgust* with ~500). The training pipeline addresses this on multiple fronts simultaneously:
 
